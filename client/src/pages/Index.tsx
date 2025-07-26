@@ -4,6 +4,7 @@ import { MangaCard } from "@/components/MangaCard";
 import { MangaReader } from "@/components/MangaReader";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Container } from "@/components/ui/container";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ThemeProvider } from "next-themes";
@@ -16,7 +17,7 @@ import {
   searchManga,
   type MangaData 
 } from "@/data/sampleManga";
-import { TrendingUp, Clock, Star, BookOpen, Eye } from "lucide-react";
+import { TrendingUp, Clock, Star, BookOpen, Eye, Grid3X3 } from "lucide-react";
 
 const Index = () => {
   const [isAdultMode, setIsAdultMode] = useState(false);
@@ -24,7 +25,7 @@ const Index = () => {
   const [selectedManga, setSelectedManga] = useState<MangaData | null>(null);
   const [currentChapter, setCurrentChapter] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
-  const [activeTab, setActiveTab] = useState("featured");
+  const [activeTab, setActiveTab] = useState("all");
 
   // Filter manga based on search and adult mode
   // R mode shows ONLY regular content, A mode shows ONLY adult content
@@ -72,7 +73,8 @@ const Index = () => {
             onPageChange={setCurrentPage}
           />
         ) : (
-          <main className="container mx-auto px-4 py-8">
+          <main className="py-8">
+            <Container>
             {/* Hero Section */}
             {!searchQuery && (
               <section className="mb-12">
@@ -120,7 +122,7 @@ const Index = () => {
                     {filteredManga.length} results
                   </Badge>
                 </div>
-                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
                   {filteredManga.map((manga) => (
                     <MangaCard
                       key={manga.id}
@@ -141,7 +143,11 @@ const Index = () => {
               </section>
             ) : (
               <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-                <TabsList className="grid w-full grid-cols-3 mb-8">
+                <TabsList className="grid w-full grid-cols-4 mb-8 bg-card/50 backdrop-blur-sm">
+                  <TabsTrigger value="all" className="flex items-center gap-2">
+                    <Grid3X3 className="h-4 w-4" />
+                    All
+                  </TabsTrigger>
                   <TabsTrigger value="featured" className="flex items-center gap-2">
                     <TrendingUp className="h-4 w-4" />
                     Featured
@@ -156,10 +162,41 @@ const Index = () => {
                   </TabsTrigger>
                 </TabsList>
 
+                <TabsContent value="all" className="space-y-8">
+                  <div className="space-y-6">
+                    <div className="flex items-center justify-between">
+                      <h2 className="text-2xl font-bold">
+                        All {isAdultMode ? "Adult" : "General"} Manga
+                      </h2>
+                      <Badge variant="secondary" className="text-sm">
+                        {filteredManga.length} titles
+                      </Badge>
+                    </div>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+                      {filteredManga.map((manga) => (
+                        <MangaCard
+                          key={manga.id}
+                          id={manga.id}
+                          title={manga.title}
+                          coverImage={manga.coverImage}
+                          rating={manga.rating}
+                          status={manga.status}
+                          chapters={manga.chapters.length}
+                          views={manga.views}
+                          genres={manga.genres}
+                          isAdult={manga.isAdult}
+                          lastUpdated={manga.lastUpdated}
+                          onClick={() => handleMangaClick(manga)}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                </TabsContent>
+
                 <TabsContent value="featured" className="space-y-8">
                   <div>
                     <h2 className="text-2xl font-bold mb-6">Featured Manga</h2>
-                    <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
                       {featuredManga.map((manga) => (
                         <MangaCard
                           key={manga.id}
@@ -183,7 +220,7 @@ const Index = () => {
                 <TabsContent value="popular" className="space-y-8">
                   <div>
                     <h2 className="text-2xl font-bold mb-6">Most Popular</h2>
-                    <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
                       {popularManga.map((manga) => (
                         <MangaCard
                           key={manga.id}
@@ -207,7 +244,7 @@ const Index = () => {
                 <TabsContent value="recent" className="space-y-8">
                   <div>
                     <h2 className="text-2xl font-bold mb-6">Recently Updated</h2>
-                    <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
                       {recentManga.map((manga) => (
                         <MangaCard
                           key={manga.id}
@@ -265,6 +302,7 @@ const Index = () => {
                 </CardContent>
               </Card>
             </section>
+            </Container>
           </main>
         )}
       </div>
