@@ -214,7 +214,9 @@ export const searchManga = (query: string, isAdultMode: boolean) => {
                         manga.genres.some(genre => genre.toLowerCase().includes(query.toLowerCase())) ||
                         manga.author.toLowerCase().includes(query.toLowerCase());
     
-    const matchesMode = isAdultMode || !manga.isAdult;
+    // When in adult mode (A), show ONLY adult content
+    // When in regular mode (R), show ONLY non-adult content
+    const matchesMode = isAdultMode ? manga.isAdult : !manga.isAdult;
     
     return matchesQuery && matchesMode;
   });

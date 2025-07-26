@@ -27,13 +27,14 @@ const Index = () => {
   const [activeTab, setActiveTab] = useState("featured");
 
   // Filter manga based on search and adult mode
+  // R mode shows ONLY regular content, A mode shows ONLY adult content
   const filteredManga = searchQuery 
     ? searchManga(searchQuery, isAdultMode)
-    : sampleManga.filter(manga => isAdultMode || !manga.isAdult);
+    : sampleManga.filter(manga => isAdultMode ? manga.isAdult : !manga.isAdult);
 
-  const featuredManga = getFeaturedManga().filter(manga => isAdultMode || !manga.isAdult);
-  const popularManga = getPopularManga().filter(manga => isAdultMode || !manga.isAdult);
-  const recentManga = getRecentManga().filter(manga => isAdultMode || !manga.isAdult);
+  const featuredManga = getFeaturedManga().filter(manga => isAdultMode ? manga.isAdult : !manga.isAdult);
+  const popularManga = getPopularManga().filter(manga => isAdultMode ? manga.isAdult : !manga.isAdult);
+  const recentManga = getRecentManga().filter(manga => isAdultMode ? manga.isAdult : !manga.isAdult);
 
   const handleMangaClick = (manga: MangaData) => {
     setSelectedManga(manga);
