@@ -52,6 +52,15 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
+				manga: {
+					primary: 'hsl(var(--manga-primary))',
+					secondary: 'hsl(var(--manga-secondary))',
+					accent: 'hsl(var(--manga-accent))',
+					surface: 'hsl(var(--manga-surface))',
+					'surface-hover': 'hsl(var(--manga-surface-hover))'
+				},
+				adult: 'hsl(var(--adult-indicator))',
+				bookmark: 'hsl(var(--bookmark))',
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',
