@@ -26,11 +26,11 @@ Preferred communication style: Simple, everyday language.
 - **Error Handling**: Centralized error handling middleware
 
 ### Database Architecture
-- **Database**: PostgreSQL
-- **ORM**: Drizzle ORM with type-safe queries
-- **Provider**: Neon Database (serverless PostgreSQL)
-- **Migrations**: Drizzle Kit for schema management
-- **Schema Location**: `shared/schema.ts` for type sharing
+- **Primary Database**: MongoDB for manga metadata and statistics
+- **Fallback Storage**: In-memory storage for development
+- **External APIs**: MangaDx API for manga metadata and chapter information
+- **File Storage**: AWS S3 for manga images and pages
+- **Schema Location**: `shared/schema.ts` for type sharing between frontend and backend
 
 ## Key Components
 
@@ -57,8 +57,10 @@ Preferred communication style: Simple, everyday language.
 ### Request Flow
 1. Client makes API request to Express server
 2. Server validates request and processes business logic
-3. Storage layer handles data persistence (currently in-memory, designed for PostgreSQL)
-4. Response sent back to client with appropriate error handling
+3. Storage layer handles data persistence (MongoDB with in-memory fallback)
+4. External APIs (MangaDx) provide metadata and content
+5. S3 provides manga image storage with signed URLs
+6. Response sent back to client with appropriate error handling
 
 ### State Management
 1. TanStack Query manages server state and caching
