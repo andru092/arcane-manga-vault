@@ -75,8 +75,10 @@ Preferred communication style: Simple, everyday language.
 ## External Dependencies
 
 ### Core Dependencies
-- **@neondatabase/serverless**: PostgreSQL connection for serverless environments
-- **drizzle-orm**: Type-safe database operations
+- **mongodb**: MongoDB database driver
+- **@aws-sdk/client-s3**: AWS S3 operations
+- **@aws-sdk/s3-request-presigner**: S3 signed URL generation
+- **axios**: HTTP client for external APIs
 - **@tanstack/react-query**: Server state management
 - **wouter**: Lightweight routing
 - **class-variance-authority**: Type-safe component variants
@@ -100,18 +102,25 @@ Preferred communication style: Simple, everyday language.
 3. **Database**: Drizzle migrations applied via `db:push` command
 
 ### Environment Requirements
-- `DATABASE_URL`: PostgreSQL connection string
+- `MONGODB_URI`: MongoDB connection string
+- `AWS_ACCESS_KEY_ID`: AWS access key for S3
+- `AWS_SECRET_ACCESS_KEY`: AWS secret key for S3
+- `S3_BUCKET_NAME`: S3 bucket for manga storage
+- `AWS_REGION`: AWS region (default: us-east-1)
 - `NODE_ENV`: Environment mode (development/production)
 
 ### Development Workflow
 - Hot module replacement via Vite in development
 - Automatic TypeScript checking
-- Database schema synchronization with Drizzle
+- Fallback storage for development without external dependencies
+- MangaDx API integration for real manga data
 
 ### Production Considerations
 - Static file serving handled by Express
-- Database migrations managed through Drizzle Kit
+- MongoDB for production data persistence
+- S3 for scalable image storage with signed URLs
 - Environment-specific configuration via environment variables
+- Graceful fallbacks for external service failures
 - Replit-specific optimizations included (error overlay, cartographer)
 
 The application is structured as a monorepo with clear separation between client, server, and shared code, making it maintainable and scalable for future enhancements.
